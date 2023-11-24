@@ -1,6 +1,10 @@
 # main.py 
 import discord
 import random
+import os 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -48,6 +52,6 @@ async def on_message(message):
 
     if message.content.startswith("!quoteme"):
         random.shuffle(quotes)
-        await message.channel.send("@everyone '" + quotes[0] + "'\n - Sun Tzu, The Art of War")
+        await message.channel.send("@everyone '" + quotes[0] + "'\n -Sun Tzu, The Art of War")
 
-client.run("MTE3NzY4MjQ1MDUxNjgxMTg1Nw.GVj5ng.QdoTpnu_eGaGPGtjqmpyb7_oYOpjwmrx3AjNWg")
+client.run(os.getenv("BOT_TOKEN"))
