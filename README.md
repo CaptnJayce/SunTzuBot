@@ -1,7 +1,8 @@
 # suntzubot
-A simple discord bot that sends Sun Tzu The Art of War quotes to my server at sunset and sunrise.
+A simple python discord bot that sends 'Sun Tzu The Art of War' quotes to my server at sunset and sunrise.
 
-Necessary
+
+Necessary:
 
     ❌ Time should synchronize with actual sunrise and sunset
     ✔️ Quotes should be random
