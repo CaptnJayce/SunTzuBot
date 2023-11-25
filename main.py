@@ -1,15 +1,19 @@
 # main.py 
 import discord
-import random
-import os 
+import random 
+import os
+import datetime
+import time 
+import asyncio
+import nextcord
+from nextcord.ext import commands, tasks
 from dotenv import load_dotenv
 
-load_dotenv()
-
-intents = discord.Intents.default()
+intents = nextcord.Intents.default()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+load_dotenv()
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 quotes = [
     "The supreme art of war is to subdue the enemy without fighting.",
@@ -45,13 +49,29 @@ quotes = [
     "The greatest victory is that which requires no battle."
 ]
 
-@client.event 
-async def on_message(message):
-    if message.author == client.user:
-        return
+'''
+@bot.command(name="quote")
+async def quote(ctx):
+    await ctx.send("@everyone '" + quotes[0] + "'\n -Sun Tzu, The Art of War")
+'''
 
-    if message.content.startswith("!quoteme"):
-        random.shuffle(quotes)
-        await message.channel.send("@everyone '" + quotes[0] + "'\n -Sun Tzu, The Art of War")
+i = 0
 
-client.run(os.getenv("BOT_TOKEN"))
+@tasks.loop(hours=4)
+async def schedule_message():
+    global i
+    print(i)
+    # id for sun-tzus-inspiration channel: 1177992967852675102
+    # id for bot-testing channel: 1178013378984296551
+    channel = bot.get_channel(1177992967852675102)
+    await channel.send("@everyone '" + quotes[i] + "'\n -Sun Tzu, The Art of War")
+    i += 1
+
+@bot.event
+async def on_ready():
+    print(f"Logged on motherfuckers")
+    random.shuffle(quotes)
+    await schedule_message.start()
+
+if __name__ == '__main__':
+    bot.run(os.getenv("BOT_TOKEN"))
