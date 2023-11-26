@@ -86,6 +86,7 @@ async def schedule_message():
         i += 1
     else:
         print("it isn't sunrise/sunset yet")
+        
 @bot.event
 async def on_ready():
     print(f"Logged on motherfuckers")
