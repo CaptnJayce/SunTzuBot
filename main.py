@@ -8,6 +8,8 @@ import asyncio
 import nextcord
 from nextcord.ext import commands, tasks
 from dotenv import load_dotenv
+from astral.sun import sun
+from astral import LocationInfo
 
 intents = nextcord.Intents.default()
 intents.message_content = True
@@ -55,18 +57,35 @@ async def quote(ctx):
     await ctx.send("@everyone '" + quotes[0] + "'\n -Sun Tzu, The Art of War")
 '''
 
+loc = LocationInfo(name='London', region='England', timezone='Europe/London', latitude=51.5072, longitude=0.1276)
+s = sun(loc.observer, date=datetime.date(2023, 11, 26), tzinfo=loc.timezone)
+
+sunrise_time = s['sunrise'].strftime("%H:%M")
+sunset_time = s['sunset'].strftime("%H:%M")
+
+now = datetime.datetime.now().strftime("%H:%M")
+
+'''
+print(now)
+print(f"Sunrise time: {sunrise_time}")
+print(f"Sunset time: {sunset_time}")
+'''
+
 i = 0
 
-@tasks.loop(hours=4)
+@tasks.loop(minutes=1)
 async def schedule_message():
-    global i
-    print(i)
-    # id for sun-tzus-inspiration channel: 1177992967852675102
-    # id for bot-testing channel: 1178013378984296551
-    channel = bot.get_channel(1177992967852675102)
-    await channel.send("@everyone '" + quotes[i] + "'\n -Sun Tzu, The Art of War")
-    i += 1
-
+    print("checking time...")
+    if(now == sunrise_time or now == sunset_time):    
+        global i
+        print(i)
+        # id for sun-tzus-inspiration channel: 1177992967852675102
+        # id for bot-testing channel: 1178013378984296551
+        channel = bot.get_channel(1177992967852675102)
+        await channel.send("@everyone '" + quotes[i] + "'\n -Sun Tzu, The Art of War")
+        i += 1
+    else:
+        print("it isn't sunrise/sunset yet")
 @bot.event
 async def on_ready():
     print(f"Logged on motherfuckers")
