@@ -63,20 +63,21 @@ s = sun(loc.observer, date=datetime.date(2023, 11, 26), tzinfo=loc.timezone)
 sunrise_time = s['sunrise'].strftime("%H:%M")
 sunset_time = s['sunset'].strftime("%H:%M")
 
-now = datetime.datetime.now().strftime("%H:%M")
+# Function to get current time
+def get_current_time():
+    return datetime.datetime.now().strftime("%H:%M")
 
-'''
-print(now)
 print(f"Sunrise time: {sunrise_time}")
 print(f"Sunset time: {sunset_time}")
-'''
 
 i = 0
 
 @tasks.loop(minutes=1)
 async def schedule_message():
-    print("checking time...")
-    if(now == sunrise_time or now == sunset_time):    
+    now = get_current_time()
+    print("Current time is: " + now)
+    if(now == sunrise_time or now == sunset_time):
+        print("It is time for a quote")    
         global i
         print(i)
         # id for sun-tzus-inspiration channel: 1177992967852675102
@@ -85,7 +86,7 @@ async def schedule_message():
         await channel.send("@everyone '" + quotes[i] + "'\n -Sun Tzu, The Art of War")
         i += 1
     else:
-        print("it isn't sunrise/sunset yet")
+        print("It isn't sunrise/sunset yet")
         
 @bot.event
 async def on_ready():
