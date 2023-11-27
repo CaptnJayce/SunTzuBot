@@ -51,12 +51,6 @@ quotes = [
     "The greatest victory is that which requires no battle."
 ]
 
-'''
-@bot.command(name="quote")
-async def quote(ctx):
-    await ctx.send("@everyone '" + quotes[0] + "'\n -Sun Tzu, The Art of War")
-'''
-
 loc = LocationInfo(name='London', region='England', timezone='Europe/London', latitude=51.5072, longitude=0.1276)
 s = sun(loc.observer, date=datetime.date(2023, 11, 26), tzinfo=loc.timezone)
 
@@ -71,6 +65,12 @@ print(f"Sunrise time: {sunrise_time}")
 print(f"Sunset time: {sunset_time}")
 
 i = 0
+
+# used for the active developer badge
+@bot.command(name="quoteme")
+async def quote(ctx):
+        channel = bot.get_channel(1178013378984296551)
+        await channel.send("@everyone '" + quotes[i] + "'\n -Sun Tzu, The Art of War")
 
 @tasks.loop(minutes=1)
 async def schedule_message():
