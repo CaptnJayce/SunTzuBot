@@ -1,5 +1,9 @@
 # suntzubot
 A simple python discord bot that sends 'Sun Tzu, The Art of War' quotes to my server at (roughly) the time of sunset and sunrise.
+Disclaimer: 
+- due to the api this bot is typically a few minutes earlier than iftar
+- i dont believe you can update datetime during runtime so restarting each day is needed for accurate timing 
+- (but who cares its literally just a meme) 
 
 **Necessary:**\
 ✔️ Time should synchronize with actual sunrise and sunset\
