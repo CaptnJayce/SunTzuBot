@@ -1,21 +1,20 @@
 # main.py 
-import discord
 import random 
 import os
 import datetime
-import time 
-import asyncio
 import nextcord
 from nextcord.ext import commands, tasks
 from dotenv import load_dotenv
 from astral.sun import sun
 from astral import LocationInfo
+import datetime
+from datetime import date
 
 intents = nextcord.Intents.default()
 intents.message_content = True
 
 load_dotenv()
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="/", intents=intents)
 
 quotes = [
     "The supreme art of war is to subdue the enemy without fighting.",
@@ -108,8 +107,13 @@ quotes = [
     "All men can see these tactics whereby I conquer, but what none can see is the strategy out of which victory is evolved."
 ]
 
+date = date.today()
+year = date.year
+month = date.month
+day = date.day
+
 loc = LocationInfo(name='London', region='England', timezone='Europe/London', latitude=51.5072, longitude=0.1276)
-s = sun(loc.observer, date=datetime.date(2023, 11, 26), tzinfo=loc.timezone)
+s = sun(loc.observer, date=datetime.date(year, month, day), tzinfo=loc.timezone)
 
 sunrise_time = s['sunrise'].strftime("%H:%M")
 sunset_time = s['sunset'].strftime("%H:%M")
@@ -147,7 +151,7 @@ async def schedule_message():
         
 @bot.event
 async def on_ready():
-    print(f"Logged on motherfuckers")
+    print(f"Logged on")
     random.shuffle(quotes)
     await schedule_message.start()
 
