@@ -130,8 +130,12 @@ i = 0
 # used for the active developer badge
 @bot.command(name="quoteme")
 async def quote(ctx):
+        global i
         channel = bot.get_channel(1178013378984296551)
         await channel.send("@everyone '" + quotes[i] + "'\n -Sun Tzu, The Art of War")
+        i += 1
+        if i >= len(quotes):
+            i = 0
 
 @tasks.loop(minutes=1)
 async def schedule_message():
@@ -146,6 +150,8 @@ async def schedule_message():
         channel = bot.get_channel(1177992967852675102)
         await channel.send("@everyone '" + quotes[i] + "'\n -Sun Tzu, The Art of War")
         i += 1
+        if i >= len(quotes):
+            i = 0
     else:
         print("It isn't sunrise/sunset yet")
         
